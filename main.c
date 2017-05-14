@@ -60,10 +60,9 @@ void add_level_as_background(byte *level_matrix, uint16_t* screen_matrix) {
 	for (i = 0; i < SCREEN_HEIGHT; i++) {
 		for (j = 0; j < SCREEN_WIDTH; j++) {
 			if (*(level_matrix + (i / height_ratio) * LEVEL_WIDTH + (j / width_ratio))) {
-				*screen_matrix = 0x003366;
+				*screen_matrix = rgb_to_16(0, 255, 0);
 			} else {
-				*screen_matrix = 0xFFFF;	
-			} 
+				*screen_matrix = rgb_to_16(255, 255, 255);	
 			screen_matrix++;
 		}
 	}
@@ -79,4 +78,14 @@ void draw_screen_matrix(byte *parlcd_mem_base, uint16_t *screen_matrix) {
 			screen_matrix++;
 		}
 	}
+}
+
+uint16_t rgb_to_16(char r, char g, char b) {
+
+	uint16_t rgb16 = 0;
+	rgb16 |= (r * 31 / 255) << 11;
+	rgb16 |= (g * 63 / 255) << 5;
+	rgb16 |= (b * 31 / 255); 
+
+	return rgb16;
 }
